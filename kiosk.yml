@@ -1,0 +1,6 @@
+---
+- hosts: pma
+  user: admin
+  become: true
+  roles:
+    - kiosk

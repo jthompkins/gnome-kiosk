@@ -1,0 +1,3 @@
+---
+# tasks file for kiosk-role
+- include_tasks: kiosk-deploy.yml

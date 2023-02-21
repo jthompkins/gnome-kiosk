@@ -1,0 +1,53 @@
+---
+
+- name: Install Kiosk
+  ansible.builtin.dnf:
+    name: 
+      - gnome-session-kiosk-session.x86_64
+      - gdm
+      - firefox
+    state: present
+- name: Get graphical target
+  ansible.builtin.command: "systemctl get-default"
+  changed_when: false
+  register: system_default_target
+
+- name: Set default target to graphical
+  ansible.builtin.command: "systemctl set-default graphical.target"
+  when: '"graphical" not in system_default_target.stdout'
+
+- name: Create kiosk directory structure
+  file:
+    state: directory
+    path: "{{ kiosk_dir }}"
+    recurse: yes    
+- name: Create kiosk file
+  copy:
+    dest: "{{ kiosk_dir }}/{{ kiosk_file }}"
+    content: |
+      #!/bin/sh
+      
+      while true; do
+        firefox --kiosk https://time.gov
+      done
+
+- name: Add executable to kiosk file
+  file:
+    state: file
+    path: "{{ kiosk_dir }}/{{ kiosk_file }}"
+    owner: "{{ kiosk_user }}"
+    group: "{{ kiosk_user }}"
+    mode: u+x
+
+- name: Ensure permissions for directory/file are correct:
+  file:
+  state: directory
+  path: "{{ kiosk_dir }}"
+  recurse: yes
+  owner: "{{ kiosk_user }}"
+  group: "{{ kiosk_group }}"
+
+
+- name: Reboot machine
+  ansible.builtin.reboot:
+    reboot_timeout: 720

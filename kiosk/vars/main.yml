@@ -1,0 +1,5 @@
+---
+# vars file for kiosk-role
+kiosk_user: admin
+kiosk_dir: "/home/{{ kiosk_user }}/.local/bin/"
+kiosk_file: redhat-kiosk
