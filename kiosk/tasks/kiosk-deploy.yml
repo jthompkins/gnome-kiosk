@@ -27,9 +27,8 @@
     content: |
       #!/bin/sh
       
-      while true; do
-        firefox --kiosk https://time.gov
-      done
+      firefox --kiosk https://time.gov
+      dbus-send --session --type=method_call --print-reply --dest=org.gnome.SessionManager /org/gnome/SessionManager org.gnome.SessionManager.Logout uint32:1
 
 - name: Add executable to kiosk file
   file:
