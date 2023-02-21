@@ -39,13 +39,13 @@
     group: "{{ kiosk_user }}"
     mode: u+x
 
-- name: Ensure permissions for directory/file are correct:
+- name: Ensure permissions for directory/file are correct
   file:
-  state: directory
-  path: "{{ kiosk_dir }}"
-  recurse: yes
-  owner: "{{ kiosk_user }}"
-  group: "{{ kiosk_group }}"
+    state: directory
+    path: "{{ kiosk_dir }}"
+    recurse: yes
+    owner: "{{ kiosk_user }}"
+    group: "{{ kiosk_user }}"
 
 
 - name: Reboot machine
